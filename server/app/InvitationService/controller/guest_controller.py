@@ -113,7 +113,6 @@ class GuestController:
             if images:
                 print("Updated guest with new images:", [image.image_url for image in images])
                 guest_json = updated_guest.as_dict()
-                print("đến đây")
                 guest_json['images'] = [image.as_dict() for image in images]
             else:
                 guest_json = updated_guest.as_dict()
