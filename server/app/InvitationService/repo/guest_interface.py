@@ -17,6 +17,17 @@ class GuestInterface(ABC):
         """Lấy danh sách khách mời theo ID người dùng."""
         pass
 
+
+    @abstractmethod
+    def get_guest_by_nickname(self, nickname: str) -> Optional[GuestModel]:
+        """Lấy thông tin khách mời theo nickname."""
+        pass
+
+    @abstractmethod
+    def get_guest_by_phone(self, phone: str) -> Optional[GuestModel]:
+        """Lấy thông tin khách mời theo số điện thoại."""
+        pass
+
     @abstractmethod
     def create_guest(self, guest: GuestModel) -> GuestModel:
         """Tạo mới một khách mời."""
@@ -42,6 +53,11 @@ class GuestInterface(ABC):
         """Xóa hình ảnh của khách mời theo ID."""
         pass
 
+
+    @abstractmethod
+    def remove_all_guest_images(self, guest_id: str) -> None:
+        """Xóa tất cả hình ảnh của khách mời theo ID khách mời."""
+        pass
 
     @abstractmethod
     def get_guest_images(self, guest_id: str) -> List[GuestImagesModel]:

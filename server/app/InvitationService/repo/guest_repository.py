@@ -25,6 +25,25 @@ class GuestRepository(GuestInterface):
                 GuestModel.is_deleted == False
             )
         ).scalars().all()
+    
+
+    def get_guest_by_nickname(self, nickname):
+        return db.session.execute(
+            db.select(GuestModel).where(
+                GuestModel.nickname == nickname,
+                GuestModel.is_deleted == False
+            )
+        ).scalar_one_or_none()
+    
+
+    def get_guest_by_phone(self, phone):
+        return db.session.execute(
+            db.select(GuestModel).where(
+                GuestModel.phone == phone,
+                GuestModel.is_deleted == False
+            )
+        ).scalar_one_or_none()
+
 
     def create_guest(self, guest_data):
         new_guest = GuestModel(**guest_data)
@@ -32,6 +51,7 @@ class GuestRepository(GuestInterface):
         return new_guest.save()
 
     def update_guest(self, guest_id, guest_data):
+        print(f"Updating guest with ID: {guest_id} with data: {guest_data}")
         guest = self.get_guest_by_id(guest_id)
         if guest:
             for key, value in guest_data.items():
@@ -54,6 +74,15 @@ class GuestRepository(GuestInterface):
         if image:
             image.soft_delete()
         return image
+    
+
+    def remove_all_guest_images(self, guest_id):
+        print(f"Removing all images for guest ID: {guest_id}")
+        images = self.get_guest_images(guest_id)
+        for image in images:
+            print(f"Removing image: {image.image_url}")
+            image.soft_delete()
+        return images
 
     def get_guest_images(self, guest_id):
         return db.session.execute(

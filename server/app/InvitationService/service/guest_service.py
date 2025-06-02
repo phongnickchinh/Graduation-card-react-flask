@@ -1,6 +1,3 @@
-
-
-
 from ...core.di_container import DIContainer
 from ..repo.guest_interface import GuestInterface
 from ...utils.firebase_interface import FirebaseInterface
@@ -17,6 +14,10 @@ class GuestService:
 
     def create_guest(self, user_id, guest_data):
         guest_data['user_id'] = user_id
+        #check unique nickname
+        existed_guest = self.guest_repo.get_guest_by_nickname(guest_data['nickname'])
+        if existed_guest:
+            raise ValueError("Guest with the same nickname already exists.")
         new_guest = self.guest_repo.create_guest(guest_data)
         if not new_guest:
             raise ValueError("Failed to create guest.")
@@ -37,20 +38,102 @@ class GuestService:
         return new_guest, images if 'images' in guest_data else None
 
 
-    def delete_guest(self, user_id, guest_id):
-        return self.guest_repo.delete_guest(guest_id)
+    def delete_guest(self, guest_id):
+        #check exist guest
+        guest = self.guest_repo.get_guest_by_id(guest_id)
+        if not guest:
+            raise ValueError("Guest not found.")
+        #delete guest
+        if not self.guest_repo.delete_guest(guest_id):
+            raise ValueError("Failed to delete guest.")
+        return True
 
+    def delete_guests(self, guest_ids):
+        """Delete multiple guests by their IDs and return deletion results."""
+        if not guest_ids or not isinstance(guest_ids, list):
+            raise ValueError("Guest IDs must be a non-empty list.")
+        
+        result = {
+            "total": len(guest_ids),
+            "success_count": 0,
+            "failed_count": 0,
+            "failed_ids": []
+        }
+        
+        for guest_id in guest_ids:
+            try:
+                guest = self.get_guest_by_id(guest_id)
+                if not guest:
+                    result["failed_count"] += 1
+                    result["failed_ids"].append(guest_id)
+                    continue
+                    
+                if self.guest_repo.delete_guest(guest_id):
+                    result["success_count"] += 1
+                else:
+                    result["failed_count"] += 1
+                    result["failed_ids"].append(guest_id)
+            except Exception:
+                result["failed_count"] += 1
+                result["failed_ids"].append(guest_id)
+                
+        return result
 
     def update_guest(self, user_id, guest_id, guest_data):
-        return self.guest_repo.update_guest(guest_id, guest_data)
+        # Bước 1: Kiểm tra khách mời có tồn tại không
+        guest = self.guest_repo.get_guest_by_id(guest_id)
+        if not guest:
+            raise ValueError("Guest not found.")
+
+        # Bước 2: Cập nhật thông tin khách mời (loại bỏ ảnh ra khỏi dữ liệu cập nhật)
+        guest_data["user_id"] = user_id
+        images = guest_data.pop("images", None)
+
+        updated_guest = self.guest_repo.update_guest(guest_id, guest_data)
+        if not updated_guest:
+            raise ValueError("Failed to update guest.")
+
+        # Bước 3: Nếu có ảnh mới → xoá ảnh cũ và thêm ảnh mới
+        if images:
+            self.guest_repo.remove_all_guest_images(guest_id)
+            uploaded_images = []
+
+            for image in images:
+                if not image:
+                    raise ValueError("Image cannot be empty.")
+                # Upload ảnh lên Firebase
+                image_url = self.firebase.upload_image(image, f"guest_images/{guest_id}")
+                if not image_url:
+                    raise ValueError("Failed to upload image.")
+                # Lưu ảnh vào database
+                guest_image = self.guest_repo.add_guest_image(guest_id, image_url)
+                uploaded_images.append(guest_image)
+
+            return updated_guest, uploaded_images
+
+        # Nếu không có ảnh mới
+        return updated_guest, None
+
 
 
     def get_guest_by_nickname(self, nickname):
-        return self.guest_repo.get_guest_by_nickname(nickname)
+        guest = self.guest_repo.get_guest_by_nickname(nickname)
+        if not guest:
+            raise ValueError("Guest not found.")
+        images = self.guest_repo.get_guest_images(guest.id)
+        if not images:
+            return guest, None
+        return guest, images
 
 
     def get_guest_by_id(self, guest_id):
-        return self.guest_repo.get_guest_by_id(guest_id)
+        guest = self.guest_repo.get_guest_by_id(guest_id)
+        if not guest:
+            raise ValueError("Guest not found.")
+        images = self.guest_repo.get_guest_images(guest.id)
+        if not images:
+            return guest, None
+        return guest, images
     
 
     def add_guest_image(self, guest_id, raw_image):
@@ -76,4 +159,6 @@ class GuestService:
         if not guest:
             raise ValueError("Guest not found.")
         #remove image from guest
-        return self.guest_repo.remove_guest_image(guest_id, image_url)
+        if not self.guest_repo.remove_guest_image(guest_id, image_url):
+            raise ValueError("Failed to remove guest image.")
+        return True

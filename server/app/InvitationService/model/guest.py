@@ -30,7 +30,7 @@ class Guest(BaseModel):
     user_id: Mapped[str] = mapped_column(String(36), ForeignKey('users.id', ondelete='CASCADE'), nullable=False, index=True)
     realname: Mapped[str] = mapped_column(String(100), nullable=False)
     nickname: Mapped[Optional[str]] = mapped_column(String(100), nullable=False, index=True)
-    facebook: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    facebook: Mapped[Optional[str]] = mapped_column(String(255), nullable=True, unique=True)
     email: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     phone: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, index=True)
     content: Mapped[str] = mapped_column(String(1000), nullable=True)
@@ -38,12 +38,13 @@ class Guest(BaseModel):
 
 
     def __init__(self, user_id: str, realname: str, content: Optional[str] = None,
-                 nickname: Optional[str] = None, email: Optional[str] = None,
-                 phone: Optional[str] = None, **kwargs):
+                nickname: Optional[str] = None, facebook: Optional[str] = None,
+                email: Optional[str] = None, phone: Optional[str] = None, **kwargs):
         """Hàm khởi tạo cho Guest."""
         self.user_id = user_id
         self.realname = realname
         self.nickname = nickname
+        self.facebook = facebook
         self.email = email
         self.phone = phone
         self.content = content
