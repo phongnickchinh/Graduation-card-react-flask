@@ -1,0 +1,32 @@
+/* Reset tràn ngang */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.image-container {
+    width: 100vw; /* Chiều rộng của khung hình */
+    /* dieu chinh do cao theo ti le A6 paper so voi chieu rong */
+    height: calc(100vw * 1.414); /* Tính toán chiều cao theo tỷ lệ A6 */
+    overflow: hidden;
+    position: relative;
+}
+
+.responsive-img {
+    width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: top; /* căn ảnh lên trên */
+    display: block;
+}
+
+
+.overlay-img {
+    position: absolute;
+    top: 39%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%; /* hoặc bạn tự chỉnh */
+    height: auto;
+}
