@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import guestApi from '../services/guestApi';
+import guestApi from '../../services/guestApi';
 
+import Navbar from '../../components/Navbar';
 import "./ResponsiveImage.css";
-import Navbar from '../components/Navbar';
 
-import background_card from '../assets/selected_card.png';
-import test_guest_name from '../assets/Frame 10.png'; // bạn có thể thay bằng ảnh động
+import background_card from '../../assets/selected_card.png';
 
 export default function GuestPage() {
     const { nickname } = useParams();
@@ -41,31 +40,35 @@ useEffect(() => {
         const navbarHeight = navbarRef.current.offsetHeight;
         const windowHeight = window.innerHeight;
 
-        //set chieu rong cua overlay-img
         const overlayImg = document.querySelector('.overlay-img');
         if (overlayImg) {
-            overlayImg.style.width = `${window.innerHeight / 1.414 * 0.8}px`;
+        overlayImg.style.width = `${(window.innerHeight / 1.414) * 0.8}px`;
         }
+
         imageContainerRef.current.style.height = `${windowHeight - navbarHeight}px`;
     } else if (imageContainerRef.current) {
-        // Bỏ style height đã set trước đó nếu điều kiện không còn đúng
         imageContainerRef.current.style.height = '';
         const overlayImg = document.querySelector('.overlay-img');
-        //loại bỏ style width đã set trước đó
         if (overlayImg) {
-            overlayImg.style.width = '';
+        overlayImg.style.width = '';
         }
     }
     };
 
-    adjustHeight();
+    // Delay gọi lần đầu 1 chút để đảm bảo ref đã gán
+    const timeout = setTimeout(adjustHeight, 200);
+
     window.addEventListener('resize', adjustHeight);
-    return () => window.removeEventListener('resize', adjustHeight);
+    return () => {
+    clearTimeout(timeout);
+    window.removeEventListener('resize', adjustHeight);
+    };
 }, []);
 
 
-    if (loading) return <div className="text-center mt-10">Đang tải...</div>;
-    if (notFound) return <div className="text-center mt-10 text-red-500">Không tìm thấy khách mời.</div>;
+
+    if (loading) return <div className="text-center mt-10">Loading...</div>;
+    if (notFound) return <div className="text-center mt-10 text-red-500">Sorry we can't find you, maybe try other nickname.</div>;
 
     return (
     <>
@@ -75,10 +78,8 @@ useEffect(() => {
 
         <div className="image-container" ref={imageContainerRef}>
         <img src={background_card} alt="Ảnh nền" className="responsive-img" />
-
-        {/* Ảnh thứ 2: nằm ở 40% chiều cao, căn giữa ngang */}
         <img
-            src={test_guest_name} // bạn có thể thay bằng ảnh động
+            src={guest.images[0].image_url}
             alt="Tên khách"
             className="overlay-img"
         />
