@@ -30,7 +30,7 @@ class UserController:
                 "vn": "Thông tin người dùng đã được lấy thành công."
             },
             "resultCode": "00089",
-            "user": user.to_json()
+            "user": user.as_dict(exclude=["password_hash"])
         })
     
     def delete_user(self, user):
