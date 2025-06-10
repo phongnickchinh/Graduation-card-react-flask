@@ -14,6 +14,11 @@ export async function logoutApi() {
 }
 
 export async function getProfileApi() {
-  const res = await api.get('/me');
+  const res = await api.get('/user/');
   return res.data; // user info
+}
+
+export async function refreshTokenApi(refreshToken) {
+  const res = await api.post('/refresh-token', { refresh_token: refreshToken });
+  return res.data; // { access_token, refresh_token }
 }
