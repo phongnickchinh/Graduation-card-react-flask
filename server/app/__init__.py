@@ -74,6 +74,10 @@ def create_app(config_class=Config):
 
     scheduler.init_app(app)
     scheduler.start()
-    scheduler.add_job(id='cleanup_blacklist_job', func=cleanup_expired_tokens, trigger='interval', minutes=5)
+    def job_wrapper():
+        with app.app_context():
+            cleanup_expired_tokens()
+
+    scheduler.add_job(id='cleanup_blacklist_job', func=job_wrapper, trigger='interval', minutes=5)
 
     return app

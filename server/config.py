@@ -36,7 +36,7 @@ class Config:
     # MAIL_DEFAULT_SENDER = "minhnguyenhai26032003@gmail.com"
     # MAIL_SUBJECT_PREFIX = "[Meal Planner]"
     
-    FIREBASE_CREDENTIALS_PATH = os.environ.get("FIREBASE_CREDENTIALS_PATH", "secrets/graduation-card-461516-1dd3b689dbd6.json")
+    FIREBASE_CREDENTIALS_PATH = os.environ.get("FIREBASE_CREDENTIALS_PATH")
     FIREBASE_STORAGE_BUCKET = os.environ.get("FIREBASE_STORAGE_BUCKET")
 
     ACCESS_TOKEN_EXPIRE_SEC = int(os.environ.get("ACCESS_TOKEN_EXPIRE_SEC", 3600))

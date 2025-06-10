@@ -1,8 +1,6 @@
 from functools import wraps
 from flask import jsonify, request
 
-from .. import db
-
 
 from functools import wraps
 from inspect import signature
