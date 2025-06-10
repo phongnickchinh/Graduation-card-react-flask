@@ -95,14 +95,27 @@ class GuestService:
 
         # Bước 3: Nếu có ảnh mới → xoá ảnh cũ và thêm ảnh mới
         if images:
+            # Lấy danh sách ảnh cũ để xóa khỏi Firebase Storage
+            old_images = self.guest_repo.get_guest_images(guest_id)
+            
+            # Xóa ảnh cũ khỏi Firebase Storage
+            if old_images:
+                for old_image in old_images:
+                    try:
+                        self.firebase.delete_image(old_image.image_url)
+                    except Exception as e:
+                        print(f"Failed to delete old image: {e}")
+                        # Continue even if deletion fails
+            
+            # Xóa record ảnh cũ khỏi database
             self.guest_repo.remove_all_guest_images(guest_id)
             uploaded_images = []
 
-            for image in images:
+            for i, image in enumerate(images):
                 if not image:
                     raise ValueError("Image cannot be empty.")
-                # Upload ảnh lên Firebase
-                image_url = self.firebase.upload_image(image, f"guest_images/{guest_id}")
+                # Upload ảnh lên Firebase với tên unique
+                image_url = self.firebase.upload_image(image, f"guest_images/{guest_id}_{i}")
                 if not image_url:
                     raise ValueError("Failed to upload image.")
                 # Lưu ảnh vào database
@@ -158,6 +171,12 @@ class GuestService:
         guest = self.guest_repo.get_guest_by_id(guest_id)
         if not guest:
             raise ValueError("Guest not found.")
+        #remove image from firebase storage
+        try:
+            self.firebase.delete_image(image_url)
+        except Exception as e:
+            print(f"Failed to delete image from Firebase: {e}")
+            # Continue even if Firebase deletion fails
         #remove image from guest
         if not self.guest_repo.remove_guest_image(guest_id, image_url):
             raise ValueError("Failed to remove guest image.")

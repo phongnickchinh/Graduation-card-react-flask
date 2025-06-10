@@ -11,3 +11,13 @@ class FirebaseInterface(ABC):
             str: Public URL of uploaded file or None if failed
         """
         pass
+
+    @abstractmethod
+    def delete_image(self, image_url):
+        """Delete image from Firebase Storage by URL
+        Args:
+            image_url: Public URL of the image to delete
+        Returns:
+            bool: True if deleted successfully, False otherwise
+        """
+        pass
