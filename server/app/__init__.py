@@ -44,6 +44,18 @@ def create_app(config_class=Config):
     mail.init_app(app)
     celery.conf.update(app.config)
     
+    # Auto migrate upgrade on server restart
+    with app.app_context():
+        try:
+            from flask_migrate import upgrade
+            print("🔄 Running database migration...")
+            upgrade()
+            print("✅ Database migration completed successfully")
+        except Exception as e:
+            print(f"⚠️ Database migration failed: {str(e)}")
+            print("🔧 Server will continue startup - please check migrations manually if needed")
+            # Continue startup even if migration fails
+    
     from .baseModel import BaseModel
     from .UserService.model.role import Role, UserRole
     from .UserService.model.user import User

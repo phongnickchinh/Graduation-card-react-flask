@@ -55,10 +55,20 @@ def process_defaults(metadata):
     for table in metadata.tables.values():
         for column in table.columns:
             if isinstance(column.type, Boolean) and column.server_default is not None:
-                if str(column.server_default.arg) == 'false':
-                    column.server_default = sa.text('0')
-                elif str(column.server_default.arg) == 'true':
-                    column.server_default = sa.text('1')
+                try:
+                    # Handle both TextClause and other default types
+                    if hasattr(column.server_default, 'arg'):
+                        default_value = str(column.server_default.arg)
+                    else:
+                        default_value = str(column.server_default)
+                    
+                    if default_value.lower() in ['false', '0']:
+                        column.server_default = sa.text('0')
+                    elif default_value.lower() in ['true', '1']:
+                        column.server_default = sa.text('1')
+                except (AttributeError, TypeError):
+                    # If we can't process the default, leave it as is
+                    continue
 
 
 def get_metadata():
