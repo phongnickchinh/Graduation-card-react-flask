@@ -48,7 +48,6 @@ def create_app(config_class=Config):
     from .UserService.model.role import Role, UserRole
     from .UserService.model.user import User
     from .InvitationService.model.guest import Guest, GuestImages
-    from .StoryService.model.story import Story
     
     # Import and initialize DI after models are imported
     from .AppConfig.di_setup import init_di
@@ -65,10 +64,6 @@ def create_app(config_class=Config):
     from .InvitationService.controller import init_app as guest_api_init
     guest_api = guest_api_init()
     app.register_blueprint(guest_api, url_prefix="/guest")
-
-    from .StoryService.controller import init_app as story_api_init
-    story_api = story_api_init()
-    app.register_blueprint(story_api, url_prefix="/story")
 
     app.register_error_handler(Exception, handle_exception)
 

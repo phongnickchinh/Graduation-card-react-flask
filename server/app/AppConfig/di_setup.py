@@ -23,9 +23,6 @@ def setup_dependencies():
     from ..InvitationService.repo.guest_interface import GuestInterface
     from ..InvitationService.repo.guest_repository import GuestRepository
 
-    from ..StoryService.repo.story_interface import StoryInterface
-    from ..StoryService.repo.story_repository import StoryRepository
-
     from ..utils.firebase_interface import FirebaseInterface
     from ..utils.firebase_helper import FirebaseHelper
 
@@ -34,7 +31,6 @@ def setup_dependencies():
     from ..UserService.service.edit_service import EditService
     from ..AuthService.service.auth_service import AuthService
     from ..InvitationService.service.guest_service import GuestService
-    from ..StoryService.service.story_service import StoryService
     
     # Import concrete implementations
     # These will be your actual repository implementations
@@ -51,13 +47,11 @@ def setup_dependencies():
     container.register(RoleInterface.__name__, RoleRepository)
     container.register(UserRoleInterface.__name__, UserRoleRepository)
     container.register(GuestInterface.__name__, GuestRepository)
-    container.register(StoryInterface.__name__, StoryRepository)
     # Register services
     container.register(AuthService.__name__, AuthService)
     container.register(UserService.__name__, UserService)
     container.register(EditService.__name__, EditService)
     container.register(GuestService.__name__, GuestService)
-    container.register(StoryService.__name__, StoryService)
 
     _is_initialized = True
     return container
