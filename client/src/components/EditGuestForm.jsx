@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import guestApi from '../services/guestApi';
+import './GuestForms.css';
 
 export default function EditGuestForm({ open, onClose, guest, onSuccess }) {
     const [formData, setFormData] = useState({
@@ -115,85 +116,85 @@ export default function EditGuestForm({ open, onClose, guest, onSuccess }) {
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-                <h2 className="text-xl font-semibold mb-4">Sửa thông tin khách mời</h2>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
+        <div className="modal-overlay">
+            <div className="modal-container">
+                <h2 className="modal-title">Sửa thông tin khách mời</h2>
+                {error && <div className="error-message">{error}</div>}
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block mb-1">Tên thật *</label>
+                    <div className="form-group">
+                        <label className="form-label">Tên thật *</label>
                         <input
                             type="text"
                             name="realname"
                             value={formData.realname}
                             onChange={handleInputChange}
-                            className="w-full border px-2 py-1 rounded"
+                            className="form-input"
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block mb-1">Nickname *</label>
+                    <div className="form-group">
+                        <label className="form-label">Nickname *</label>
                         <input
                             type="text"
                             name="nickname"
                             value={formData.nickname}
                             onChange={handleInputChange}
-                            className="w-full border px-2 py-1 rounded"
+                            className="form-input"
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block mb-1">Email</label>
+                    <div className="form-group">
+                        <label className="form-label">Email</label>
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="w-full border px-2 py-1 rounded"
+                            className="form-input"
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block mb-1">Số điện thoại</label>
+                    <div className="form-group">
+                        <label className="form-label">Số điện thoại</label>
                         <input
                             type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="w-full border px-2 py-1 rounded"
+                            className="form-input"
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block mb-1">Facebook</label>
+                    <div className="form-group">
+                        <label className="form-label">Facebook</label>
                         <input
                             type="text"
                             name="facebook"
                             value={formData.facebook}
                             onChange={handleInputChange}
-                            className="w-full border px-2 py-1 rounded"
+                            className="form-input"
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block mb-1">Thêm ảnh</label>
+                    <div className="form-group">
+                        <label className="form-label">Thêm ảnh</label>
                         <input
                             type="file"
                             accept="image/*"
                             onChange={handleImageChange}
-                            className="w-full"
+                            className="file-input"
                         />
                         
                         {/* Display existing images (read-only) */}
                         {guest && guest.images && guest.images.length > 0 && (
-                            <div className="mt-4">
-                                <p className="font-medium mb-2">Ảnh hiện tại ({guest.images.length}):</p>
-                                <div className="grid grid-cols-3 gap-2">
+                            <div className="image-section">
+                                <div className="image-section-title">Ảnh hiện tại ({guest.images.length}):</div>
+                                <div className="image-grid">
                                     {guest.images.map((img, index) => (
-                                        <div key={index} className="relative">
+                                        <div key={index} className="image-item">
                                             <img 
                                                 src={img.image_url} 
                                                 alt={`Existing ${index}`} 
-                                                className="w-full h-24 object-cover rounded border-2 border-gray-300"
+                                                className="image-preview image-existing"
                                             />
-                                            <div className="absolute top-0 left-0 bg-green-600 text-white text-xs px-1 rounded-br">
+                                            <div className="image-badge badge-current">
                                                 Hiện tại
                                             </div>
                                         </div>
@@ -204,23 +205,23 @@ export default function EditGuestForm({ open, onClose, guest, onSuccess }) {
                         
                         {/* New Images to be added */}
                         {images.length > 0 && (
-                            <div className="mt-4">
-                                <p className="font-medium mb-2">Ảnh mới sẽ thêm ({images.length}):</p>
-                                <div className="grid grid-cols-3 gap-2">
+                            <div className="image-section">
+                                <div className="image-section-title">Ảnh mới sẽ thêm ({images.length}):</div>
+                                <div className="image-grid">
                                     {images.map((img, index) => (
-                                        <div key={index} className="relative group">
+                                        <div key={index} className="image-item">
                                             <img 
                                                 src={img.url} 
                                                 alt={`Image ${index}`} 
-                                                className="w-full h-24 object-cover rounded"
+                                                className="image-preview image-new"
                                             />
-                                            <div className="absolute top-0 left-0 bg-black bg-opacity-20 text-white text-xs px-1 rounded-br">
+                                            <div className="image-badge badge-new">
                                                 {img.isExisting ? 'Có sẵn' : 'Mới'}
                                             </div>
                                             <button
                                                 type="button"
                                                 onClick={() => removeImage(index)}
-                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                                className="image-remove-btn"
                                             >
                                                 ×
                                             </button>
@@ -230,18 +231,18 @@ export default function EditGuestForm({ open, onClose, guest, onSuccess }) {
                             </div>
                         )}
                     </div>
-                    <div className="flex justify-end gap-2">
+                    <div className="form-actions">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                            className="btn btn-secondary"
                         >
                             Hủy
                         </button>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300"
+                            className="btn btn-primary btn-submit"
                         >
                             {loading ? 'Đang lưu...' : 'Lưu'}
                         </button>

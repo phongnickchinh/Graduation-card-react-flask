@@ -1,0 +1,250 @@
+/* Navbar Styles */
+.navbar {
+  width: 100%;
+  background-color: #FFF4EF; /* Light background */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 6px 16px;
+}
+
+.navbar-container {
+  /* max-width: 1200px; */
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Menu Toggle Button */
+.menu-toggle {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.menu-toggle:hover {
+  transform: scale(1.1);
+}
+
+.menu-toggle .menu-icon {
+  width: 150px;
+  height: 25px;
+  object-fit: contain;
+  transition: 0.3s;
+}
+
+.menu-toggle:hover .menu-icon {
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Overlay Menu Styles */
+.overlay-menu {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: #FFF4EF;
+  /* 85% opacity background. other element keep 100% */
+    background-color: rgba(255, 244, 239, 0.85);
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.overlay-menu.open {
+  width: 100%;
+}
+
+.overlay-content {
+  position: relative;
+  top: 15%;
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  /* padding: 20px; */
+  gap: 50px;
+}
+
+.menu-item {
+  width: 90%;
+  max-width: 400px;
+  height: 25%;
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  transition: 0.3s;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+}
+
+.menu-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.menu-item:hover img {
+  filter: brightness(1.05);
+}
+
+.overlay-menu a {
+  padding: 0;
+  text-decoration: none;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+  width: 100%;
+  height: auto;
+}
+
+.overlay-menu a:hover,
+.overlay-menu a:focus {
+  color: #f1f1f1;
+}
+
+/* Close Button */
+.overlay-menu .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0px;
+}
+
+.overlay-menu .close-btn:hover {
+  transform: scale(1.1);
+}
+
+.menu-close-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  /* filter: brightness(0.6); */
+  transition: 0.3s;
+}
+
+.overlay-menu .close-btn:hover .menu-close-icon {
+  filter: brightness(1.2) contrast(1.1);
+    transform: rotate(90deg);
+    
+}
+
+/* Logout Button */
+.overlay-menu .logout-btn {
+  padding: 12px 24px;
+  font-size: 18px;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  border: 2px solid #ff6b6b;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+  transition: 0.3s;
+  min-width: 150px;
+}
+
+.overlay-menu .logout-btn:hover {
+  background: #ff6b6b;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* Media Queries */
+@media screen and (min-width: 1024px) {
+  .overlay-content {
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    top: 50%;
+    transform: translateY(-50%);
+    height: auto;
+    /* padding: 40px; */
+  }
+  
+  .menu-item {
+    width: 50%;
+    height: 200px;
+    max-width: 400px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .overlay-content {
+    top: 20%;
+    height: 70%;
+    gap: 50px;
+  }
+  
+  .menu-item {
+    width: 70%;
+    height: 28%;
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-height: 450px) {
+  .overlay-content {
+    top: 10%;
+    height: 80%;
+    gap: 10px;
+  }
+  
+  .menu-item {
+    width: 85%;
+    height: 25%;
+    min-height: 80px;
+  }
+  
+  .overlay-menu .close-btn {
+    top: 15px;
+    right: 35px;
+  }
+  
+  .menu-close-icon {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .overlay-menu .logout-btn {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .overlay-content {
+    top: 12%;
+    /* padding: 10px; */
+    gap: 50px;
+  }
+  
+  .menu-item {
+    width: 85%;
+    height: 28%;
+  }
+  
+  .overlay-menu .logout-btn {
+    font-size: 16px;
+  }
+}

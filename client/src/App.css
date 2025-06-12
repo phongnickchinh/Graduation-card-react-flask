@@ -1,3 +1,7 @@
+html {
+  background-color: #FFF4EF;
+}
+
 #root {
   /* max-width: 1280px; */
   margin: 0 auto;

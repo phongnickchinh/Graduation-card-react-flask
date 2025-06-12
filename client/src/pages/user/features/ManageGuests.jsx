@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AddGuestForm from '../../../components/AddGuestForm';
 import EditGuestForm from '../../../components/EditGuestForm'; // Import the new component
 import guestApi from '../../../services/guestApi';
+import './ManageGuests.css';
 
 export default function InviteManager() {
     const [guests, setGuests] = useState([]);
@@ -87,11 +88,11 @@ export default function InviteManager() {
     };
 
     return (
-        <div>
-            <div className="flex justify-between items-center mb-4">
+        <div className="manage-guests-container">
+            <div className="header-actions">
                 <button
                     onClick={() => setShowAddModal(true)}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    className="btn btn-primary"
                 >
                     + Thêm khách mời
                 </button>
@@ -99,60 +100,62 @@ export default function InviteManager() {
                 {selectedGuestIds.length > 0 && (
                     <button
                         onClick={handleDeleteSelected}
-                        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                        className="btn btn-danger"
                     >
                         Xóa đã chọn ({selectedGuestIds.length})
                     </button>
                 )}
             </div>
 
-            <h2 className="text-xl font-semibold mb-4">Danh sách khách mời</h2>
+            <h2 className="page-title">Danh sách khách mời</h2>
 
-            {loading && <p>Đang tải...</p>}
-            {error && <p className="text-red-500">{error}</p>}
+            {loading && <div className="loading-text">Đang tải...</div>}
+            {error && <div className="error-text">{error}</div>}
 
-            {!loading && guests.length === 0 && <p>Chưa có khách mời nào.</p>}
+            {!loading && guests.length === 0 && (
+                <div className="empty-state">Chưa có khách mời nào.</div>
+            )}
 
             {!loading && guests.length > 0 && (
-                <table className="w-full table-auto border-collapse">
-                    <thead>
-                        <tr className="bg-gray-100">
-                            <th className="border px-4 py-2 text-left">
+                <table className="guests-table">
+                    <thead className="table-header">
+                        <tr>
+                            <th>
                                 <input
                                     type="checkbox"
                                     checked={selectedGuestIds.length === guests.length && guests.length > 0}
                                     onChange={handleSelectAll}
-                                    className="mr-2"
+                                    className="checkbox"
                                 />
                                 #
                             </th>
-                            <th className="border px-4 py-2 text-left">Tên thật</th>
-                            <th className="border px-4 py-2 text-left">Nickname</th>
-                            <th className="border px-4 py-2 text-left">Ngày tạo</th>
-                            <th className="border px-4 py-2 text-left">Hành động</th>
+                            <th>Tên thật</th>
+                            <th>Nickname</th>
+                            <th>Ngày tạo</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
                         {guests.map((guest, index) => (
-                            <tr key={guest.id} className="hover:bg-gray-50">
-                                <td className="border px-4 py-2">
+                            <tr key={guest.id} className="table-row">
+                                <td className="table-cell">
                                     <input
                                         type="checkbox"
                                         checked={selectedGuestIds.includes(guest.id)}
                                         onChange={() => handleSelectGuest(guest.id)}
-                                        className="mr-2"
+                                        className="checkbox"
                                     />
                                     {index + 1}
                                 </td>
-                                <td className="border px-4 py-2">{guest.realname}</td>
-                                <td className="border px-4 py-2">{guest.nickname}</td>
-                                <td className="border px-4 py-2">
+                                <td className="table-cell">{guest.realname}</td>
+                                <td className="table-cell">{guest.nickname}</td>
+                                <td className="table-cell">
                                     {new Date(guest.created_at).toLocaleDateString('vi-VN')}
                                 </td>
-                                <td className="border px-4 py-2">
+                                <td className="table-cell actions-cell">
                                     <button
                                         onClick={() => handleEditGuest(guest.id)}
-                                        className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 mr-2"
+                                        className="btn btn-secondary btn-small"
                                     >
                                         Sửa
                                     </button>
@@ -161,7 +164,7 @@ export default function InviteManager() {
                                             setSelectedGuestIds([guest.id]);
                                             setShowDeleteConfirm(true);
                                         }}
-                                        className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
+                                        className="btn btn-danger btn-small"
                                     >
                                         Xóa
                                     </button>
@@ -188,26 +191,26 @@ export default function InviteManager() {
 
             {/* Delete Confirmation Modal */}
             {showDeleteConfirm && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-                        <h3 className="text-lg font-semibold mb-4">Xác nhận xóa</h3>
-                        <p className="text-gray-600 mb-6">
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3 className="modal-title">Xác nhận xóa</h3>
+                        <p className="modal-text">
                             Bạn có chắc chắn muốn xóa {selectedGuestIds.length} khách mời đã chọn? 
                             Hành động này không thể hoàn tác.
                         </p>
-                        <div className="flex justify-end space-x-4">
+                        <div className="modal-actions">
                             <button
                                 onClick={() => {
                                     setShowDeleteConfirm(false);
                                     setSelectedGuestIds([]);
                                 }}
-                                className="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50"
+                                className="btn btn-outline"
                             >
                                 Hủy
                             </button>
                             <button
                                 onClick={confirmDelete}
-                                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                className="btn btn-danger"
                             >
                                 Xóa
                             </button>
