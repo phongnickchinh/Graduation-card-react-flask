@@ -55,7 +55,7 @@ useEffect(() => {
   // Tự động refresh token định kỳ
   useEffect(() => {
     const interval = setInterval(() => {
-      const refresh_token = localStorage.getItem('refresh_token');
+      const refreshToken = localStorage.getItem('refresh_token');
       if (!refreshToken) return;
 
       refreshTokenApi(refreshToken)
