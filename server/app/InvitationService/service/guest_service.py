@@ -1,11 +1,13 @@
 from ...core.di_container import DIContainer
 from ..repo.guest_interface import GuestInterface
+from ...UserService.repo.user_interface import UserInterface
 from ...utils.firebase_interface import FirebaseInterface
 
 class GuestService:
     def __init__(self):
         container = DIContainer.get_instance()
         self.guest_repo = container.resolve(GuestInterface.__name__)
+        self.user_repo = container.resolve(UserInterface.__name__)
         self.firebase = container.resolve(FirebaseInterface.__name__)
 
     def get_guests_by_user_id(self, user_id):
@@ -15,7 +17,7 @@ class GuestService:
     def create_guest(self, user_id, guest_data):
         guest_data['user_id'] = user_id
         #check unique nickname
-        existed_guest = self.guest_repo.get_guest_by_nickname(guest_data['nickname'])
+        existed_guest = self.guest_repo.get_guest_by_nickname(user_id, guest_data['nickname'])
         if existed_guest:
             raise ValueError("Guest with the same nickname already exists.")
         new_guest = self.guest_repo.create_guest(guest_data)
@@ -130,7 +132,11 @@ class GuestService:
 
 
     def get_guest_by_nickname(self, username, nickname):
-        guest = self.guest_repo.get_guest_by_nickname(username, nickname)
+        user = self.user_repo.get_user_by_username(username)
+        if not user:
+            raise ValueError("User not found.")
+
+        guest = self.guest_repo.get_guest_by_nickname(user.id, nickname)
         if not guest:
             raise ValueError("Guest not found.")
         images = self.guest_repo.get_guest_images(guest.id)
