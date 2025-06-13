@@ -56,7 +56,7 @@ useEffect(() => {
     };
 
     // Delay gọi lần đầu 1 chút để đảm bảo ref đã gán
-    const timeout = setTimeout(adjustHeight, 200);
+    const timeout = setTimeout(adjustHeight, 1000);
 
     window.addEventListener('resize', adjustHeight);
     return () => {
@@ -78,11 +78,17 @@ useEffect(() => {
 
         <div className="image-container" ref={imageContainerRef}>
         <img src={background_card} alt="Ảnh nền" className="responsive-img" />
-        <img
-            src={guest.images[0].image_url}
-            alt="Tên khách"
-            className="overlay-img"
-        />
+        {guest.images && guest.images.length > 0 ? (
+            <img
+                src={guest.images[0].image_url}
+                alt="Tên khách"
+                className="overlay-img"
+            />
+        ) : (
+            <div className="overlay-img" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.7)', padding: '1rem'}}>
+                <p>Không có ảnh</p>
+            </div>
+        )}
         </div>
     </>
     );

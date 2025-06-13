@@ -4,6 +4,16 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Navbar.css';
 
+// Import images
+import frameLogo from '../assets/Frame 10.png';
+import menuIcon from '../assets/menu.png';
+import menuCloseIcon from '../assets/menu_close.png';
+import guestbookIcon from '../assets/navbar/guestbook.png';
+import invitationIcon from '../assets/navbar/invitation.png';
+import myStoryIcon from '../assets/navbar/myStory.png';
+import reactLogo from '../assets/react.svg';
+import selectedCardIcon from '../assets/selected_card.png';
+
 export default function Navbar() {
     const { user, logout } = useAuth(); // user tồn tại nếu đã đăng nhập
     const location = useLocation();
@@ -37,7 +47,7 @@ export default function Navbar() {
                         title="Mở menu"
                     >
                         <img 
-                            src="/src/assets/menu.png" 
+                            src={menuIcon}
                             alt="Menu"
                             className="menu-icon"
                         />
@@ -53,7 +63,7 @@ export default function Navbar() {
                     className="close-btn"
                 >
                                             <img 
-                            src="/src/assets/menu_close.png" 
+                            src={menuCloseIcon} 
                             alt="Menu"
                             className="menu-close-icon"
                         />
@@ -70,7 +80,7 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src="/src/assets/navbar/invitation.png" 
+                                    src={invitationIcon} 
                                     alt="Thiệp mời"
                                 />
                             </Link>
@@ -80,7 +90,7 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src="/src/assets/navbar/guestbook.png" 
+                                    src={guestbookIcon} 
                                     alt="Lưu bút"
                                 />
                             </Link>
@@ -90,7 +100,7 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src="/src/assets/navbar/myStory.png" 
+                                    src={myStoryIcon} 
                                     alt="Câu chuyện"
                                 />
                             </Link>
@@ -104,7 +114,7 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src="/src/assets/selected_card.png" 
+                                    src={selectedCardIcon} 
                                     alt="Thiệp mời"
                                 />
                             </Link>
@@ -114,7 +124,7 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src="/src/assets/react.svg" 
+                                    src={reactLogo} 
                                     alt="Story"
                                 />
                             </Link>
@@ -124,7 +134,7 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src="/src/assets/Frame 10.png" 
+                                    src={frameLogo} 
                                     alt="Lưu bút"
                                 />
                             </Link>
