@@ -131,7 +131,7 @@ export default function InviteManager() {
                             </th>
                             <th>Tên thật</th>
                             <th>Nickname</th>
-                            <th>Ngày tạo</th>
+                            {/* <th>Ngày tạo</th> */}
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -149,9 +149,9 @@ export default function InviteManager() {
                                 </td>
                                 <td className="table-cell">{guest.realname}</td>
                                 <td className="table-cell">{guest.nickname}</td>
-                                <td className="table-cell">
+                                {/* <td className="table-cell">
                                     {new Date(guest.created_at).toLocaleDateString('vi-VN')}
-                                </td>
+                                </td> */}
                                 <td className="table-cell actions-cell">
                                     <button
                                         onClick={() => handleEditGuest(guest.id)}

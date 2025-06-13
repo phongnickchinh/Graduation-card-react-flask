@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import './Login.css';
 
 export default function Login() {
   const { login, user } = useAuth();
@@ -30,17 +31,17 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="login-container">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-2xl shadow-md w-full max-w-sm"
+        className="login-form"
       >
-        <h2 className="text-2xl font-semibold text-center mb-4">Đăng nhập</h2>
+        <h2 className="login-title">Đăng nhập</h2>
 
-        {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
+        {error && <div className="login-error">{error}</div>}
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+        <div className="form-group">
+          <label className="form-label">
             Email
           </label>
           <input
@@ -49,12 +50,12 @@ export default function Login() {
             value={form.email}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-input"
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+        <div className="form-group">
+          <label className="form-label">
             Mật khẩu
           </label>
           <input
@@ -63,14 +64,14 @@ export default function Login() {
             value={form.password}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-input"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          className="login-button"
         >
           {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
         </button>
