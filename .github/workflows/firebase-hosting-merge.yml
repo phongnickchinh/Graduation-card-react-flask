@@ -24,3 +24,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GRADUATION_CARD_461516 }}
           channelId: live
           projectId: graduation-card-461516
+          entryPoint: ./client

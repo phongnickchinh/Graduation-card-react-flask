@@ -25,3 +25,4 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GRADUATION_CARD_461516 }}
           projectId: graduation-card-461516
+          entryPoint: ./client
