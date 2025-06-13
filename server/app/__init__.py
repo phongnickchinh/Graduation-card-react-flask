@@ -60,6 +60,7 @@ def create_app(config_class=Config):
     from .UserService.model.role import Role, UserRole
     from .UserService.model.user import User
     from .InvitationService.model.guest import Guest, GuestImages
+    from .GuestBookService.model.guestBook import GuestBook
     
     # Import and initialize DI after models are imported
     from .AppConfig.di_setup import init_di

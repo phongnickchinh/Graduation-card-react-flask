@@ -32,10 +32,11 @@ class User(BaseModel):
     )
     tokens = relationship('Token', back_populates='user', cascade="all, delete-orphan", lazy='dynamic')
     blacklist = relationship('Blacklist', back_populates='user', cascade="all, delete-orphan", lazy='dynamic')
-    
 
-    def __init__(self, email: str, password: str, username: str, name: str, deviceId: str, 
-                 language: str = 'en', timezone: Optional[str] = None, 
+    guest_books = relationship('GuestBook', back_populates='user', cascade="all, delete-orphan", lazy='dynamic')
+
+    def __init__(self, email: str, password: str, username: str, name: str, deviceId: str,
+                language: str = 'en', timezone: Optional[str] = None,
                  avatar_url: Optional[str] = None, is_verified: bool = False, **kwargs):
         """
         Hàm khởi tạo cho User.
