@@ -78,6 +78,10 @@ def create_app(config_class=Config):
     guest_api = guest_api_init()
     app.register_blueprint(guest_api, url_prefix="/guest")
 
+    from .GuestBookService.controller import init_app as guestbook_api_init
+    guestbook_api = guestbook_api_init()
+    app.register_blueprint(guestbook_api, url_prefix="/guestbook")
+
     app.register_error_handler(Exception, handle_exception)
 
     scheduler.init_app(app)
