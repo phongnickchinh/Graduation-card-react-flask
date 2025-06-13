@@ -25,7 +25,7 @@ class GuestController:
 
 
         # #lay thiep moi theo nickname
-        guest_api.add_url_rule('/<string:nickname>', 'custom_invitation', self.custom_invitation, methods=['GET'])
+        guest_api.add_url_rule('/<string:username>/<string:nickname>', 'custom_invitation', self.custom_invitation, methods=['GET'])
         # #lay guest theo id
         guest_api.add_url_rule('/id/<string:guest_id>', 'view_guest_specific', self._wrap_jwt_required(self.view_guest_specific), methods=['GET'])
 
@@ -121,14 +121,16 @@ class GuestController:
             return jsonify({"message": str(e)}), 400
         
 
-    def custom_invitation(self, nickname):
+    def custom_invitation(self, username, nickname):
         """Get guest by nickname to display custom invitation."""
+        if not username:
+            return jsonify({"message": "Username is required."}), 400
         if not nickname:
             return jsonify({"message": "Nickname is required."}), 400
         
         # nick name có dạng Đồng_chí_Phong, phải loại bỏ dấu gạch dưới
         nickname = nickname.replace('_', ' ')
-        guest, images = self.guest_service.get_guest_by_nickname(nickname)
+        guest, images = self.guest_service.get_guest_by_nickname(username,nickname)
         if not guest:
             return jsonify({"message": "Guest not found."}), 404
         if images:

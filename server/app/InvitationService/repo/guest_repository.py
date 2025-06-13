@@ -1,6 +1,7 @@
 from .guest_interface import GuestInterface
 
 from ..model.guest import Guest as GuestModel, GuestImages as GuestImagesModel
+from ...UserService.model.user import User as UserModel
 
 from ... import db
 
@@ -27,10 +28,25 @@ class GuestRepository(GuestInterface):
         ).scalars().all()
     
 
-    def get_guest_by_nickname(self, nickname):
+    def get_guest_by_nickname(self, username, nickname):
+        # 1. Đầu tiên, tìm user_id từ username trong bảng users
+        from ...UserService.model.user import User as UserModel
+        user = db.session.execute(
+            db.select(UserModel).where(
+                UserModel.username == username,
+                UserModel.is_deleted == False
+            )
+        ).scalar_one_or_none()
+        
+        if not user:
+            print(f"User with username '{username}' not found")
+            return None
+            
+        # 2. Sau đó tìm guest với user_id và nickname
         return db.session.execute(
             db.select(GuestModel).where(
                 GuestModel.nickname == nickname,
+                GuestModel.user_id == user.id,
                 GuestModel.is_deleted == False
             )
         ).scalar_one_or_none()

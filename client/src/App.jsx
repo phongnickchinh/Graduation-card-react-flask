@@ -17,7 +17,7 @@ function App() {
       <Routes>
         {/* Guest/public routes */}
         <Route path="/login" element={<Login />} />
-        <Route path="/invitation/:nickname" element={<GuestPage />} />
+        <Route path="/invitation/:username/:nickname" element={<GuestPage />} />
 
         {/* Authenticated routes */}
         <Route path="/user/:username" element={<ProtectedRoute> <Dashboard/></ProtectedRoute>} >

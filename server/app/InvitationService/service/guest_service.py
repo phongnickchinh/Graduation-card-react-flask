@@ -129,8 +129,8 @@ class GuestService:
 
 
 
-    def get_guest_by_nickname(self, nickname):
-        guest = self.guest_repo.get_guest_by_nickname(nickname)
+    def get_guest_by_nickname(self, username, nickname):
+        guest = self.guest_repo.get_guest_by_nickname(username, nickname)
         if not guest:
             raise ValueError("Guest not found.")
         images = self.guest_repo.get_guest_images(guest.id)

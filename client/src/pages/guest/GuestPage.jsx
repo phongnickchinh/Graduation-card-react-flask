@@ -8,7 +8,7 @@ import "./ResponsiveImage.css";
 import background_card from '../../assets/selected_card.png';
 
 export default function GuestPage() {
-    const { nickname } = useParams();
+    const { username, nickname } = useParams();
     const [guest, setGuest] = useState(null);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
@@ -19,16 +19,18 @@ export default function GuestPage() {
     useEffect(() => {
     const fetchGuest = async () => {
         try {
-        const res = await guestApi.getGuestByNickname(nickname);
+        console.log(`Fetching guest for username: ${username}, nickname: ${nickname}`);
+        const res = await guestApi.getGuestByNickname(username, nickname);
         setGuest(res.data);
         } catch (err) {
+        console.error("Error fetching guest:", err);
         setNotFound(true);
         } finally {
         setLoading(false);
         }
     };
     fetchGuest();
-    }, [nickname]);
+    }, [username, nickname]);
 
 useEffect(() => {
     const adjustHeight = () => {

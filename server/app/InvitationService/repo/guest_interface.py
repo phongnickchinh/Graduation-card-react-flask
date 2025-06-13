@@ -19,7 +19,7 @@ class GuestInterface(ABC):
 
 
     @abstractmethod
-    def get_guest_by_nickname(self, nickname: str) -> Optional[GuestModel]:
+    def get_guest_by_nickname(self, username: str, nickname: str) -> Optional[GuestModel]:
         """Lấy thông tin khách mời theo nickname."""
         pass
 
