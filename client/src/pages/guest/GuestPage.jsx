@@ -58,7 +58,7 @@ useEffect(() => {
     };
 
     // Delay gọi lần đầu 1 chút để đảm bảo ref đã gán
-    const timeout = setTimeout(adjustHeight, 1000);
+    const timeout = setTimeout(adjustHeight, 2000);
 
     window.addEventListener('resize', adjustHeight);
     return () => {
