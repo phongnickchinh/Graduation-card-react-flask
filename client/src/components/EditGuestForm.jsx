@@ -113,7 +113,7 @@ export default function EditGuestForm({ open, onClose, guest, onSuccess }) {
         }
     };
 
-    if (!open) return null;
+    if (!open) return <></>;
 
     return (
         <div className="modal-overlay">

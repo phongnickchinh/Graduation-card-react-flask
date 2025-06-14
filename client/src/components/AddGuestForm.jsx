@@ -8,7 +8,7 @@ export default function AddGuestModal({ open, onClose, onSuccess }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  if (!open) return null;
+  if (!open) return <></>;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

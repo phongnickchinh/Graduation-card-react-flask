@@ -58,9 +58,10 @@ body, html {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.error-message {
+.error-message-notFound{
     color: #ef4444;
     font-weight: 600; /* Slightly bolder for error messages */
+    font-size: 1.75rem !important;
 }
 
 /* Media query for small screens */
@@ -68,6 +69,9 @@ body, html {
     .centered-message {
         font-size: 1.5rem;
         padding: 1.25rem;
+    }
+    .error-message-notFound {
+        font-size: 1.25rem !important; /* Smaller error message on mobile */
     }
 
 }

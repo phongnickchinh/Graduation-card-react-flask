@@ -71,12 +71,12 @@ useEffect(() => {
 
     if (loading) return (
         <div className="centered-message-container">
-            <div className="centered-message">Mạng lag quá, xin kiên nhẫn chờ chút...</div>
+            <div className="centered-message">Mạng lag quá, xin chờ thêm chút...</div>
         </div>
     );
     if (notFound) return (
         <div className="centered-message-container">
-            <div className="centered-message error-message">Xin lỗi, chúng tôi không tìm thấy bạn, bạn có thể thử với đường dẫn hoặc nickname khác.</div>
+            <div className="centered-message error-message error-message-notFound">Xin lỗi, tôi không tìm thấy bạn. Hãy thử lại với đường dẫn hoặc nickname khác.</div>
         </div>
     );
 
