@@ -69,8 +69,16 @@ useEffect(() => {
 
 
 
-    if (loading) return <div className="text-center mt-10">Mạng lag quá, xin kiên nhẫn chờ chút...</div>;
-    if (notFound) return <div className="text-center mt-10 text-red-500">Xin lỗi, chúng tôi không tìm thấy bạn, bạn có thể thử với đường dẫn hoặc nickname khác.</div>;
+    if (loading) return (
+        <div className="centered-message-container">
+            <div className="centered-message">Mạng lag quá, xin kiên nhẫn chờ chút...</div>
+        </div>
+    );
+    if (notFound) return (
+        <div className="centered-message-container">
+            <div className="centered-message error-message">Xin lỗi, chúng tôi không tìm thấy bạn, bạn có thể thử với đường dẫn hoặc nickname khác.</div>
+        </div>
+    );
 
     return (
     <>

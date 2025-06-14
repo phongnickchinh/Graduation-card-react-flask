@@ -30,3 +30,44 @@ body, html {
     width: 80%; /* hoặc bạn tự chỉnh */
     height: auto;
 }
+
+/* Styles for centered messages */
+.centered-message-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+}
+
+.centered-message {
+    text-align: center;
+    font-size: 1.75rem; /* Larger font size */
+    max-width: 90%; /* Wider on mobile */
+    padding: 1.5rem;
+    font-weight: 500; /* Medium weight for better visibility */
+    line-height: 1.4;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+    color: #ef4444;
+    font-weight: 600; /* Slightly bolder for error messages */
+}
+
+/* Media query for small screens */
+@media (max-width: 480px) {
+    .centered-message {
+        font-size: 1.5rem;
+        padding: 1.25rem;
+    }
+
+}
