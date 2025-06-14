@@ -20,7 +20,7 @@ export default function Navbar() {
     const params = useParams();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const isGuest = location.pathname.includes('/invitation') || location.pathname.includes('/guestbook') || location.pathname.includes('/story');
+    const isGuest = location.pathname.includes('/GraduationInvitation') || location.pathname.includes('/guestbook') || location.pathname.includes('/story');
     const nickname = params.nickname;
 
     const openMenu = () => setIsMenuOpen(true);
@@ -75,7 +75,7 @@ export default function Navbar() {
                     {isGuest && nickname ? (
                         <>
                             <Link
-                                to={`/invitation/${nickname}`}
+                                to={`/GraduationInvitation/${nickname}`}
                                 onClick={handleLinkClick}
                                 className="menu-item"
                             >
