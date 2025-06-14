@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import AddGuestForm from '../../../components/AddGuestForm';
 import EditGuestForm from '../../../components/EditGuestForm'; // Import the new component
+import { useAuth } from '../../../contexts/AuthContext';
 import guestApi from '../../../services/guestApi';
 import './ManageGuests.css';
 
@@ -13,6 +14,7 @@ export default function InviteManager() {
     const [selectedGuest, setSelectedGuest] = useState(null);
     const [selectedGuestIds, setSelectedGuestIds] = useState([]);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchGuests = async () => {
@@ -87,6 +89,50 @@ export default function InviteManager() {
         }
     };
 
+    const handleExportGuests = () => {
+        if (guests.length === 0) {
+            setError('Không có khách mời nào để xuất.');
+            return;
+        }
+
+        // Create CSV content
+        const baseUrl = 'https://phamphong.id.vn/GraduationInvitation';
+        
+        // Extract username from user object (try different possible properties)
+        const username = user?.username || user?.name || user?.user_name || '';
+        
+        if (!username) {
+            setError('Không thể xuất danh sách. Không tìm thấy thông tin người dùng.');
+            return;
+        }
+        
+        const headers = ["Tên Thật", "Nickname", "Đường Dẫn Lời Mời"];
+        const csvContent = [
+            headers.join(','),
+            ...guests.map(guest => {
+                // Replace spaces with underscores in nickname for URL
+                const urlSafeNickname = guest.nickname ? guest.nickname.replace(/\s+/g, '_') : '';
+                const invitationUrl = `${baseUrl}/${username}/${urlSafeNickname}`;
+                
+                // Escape commas in CSV fields
+                const escapedRealname = guest.realname ? `"${guest.realname.replace(/"/g, '""')}"` : '';
+                const escapedNickname = guest.nickname ? `"${guest.nickname.replace(/"/g, '""')}"` : '';
+                return `${escapedRealname},${escapedNickname},${invitationUrl}`;
+            })
+        ].join('\n');
+
+        // Create a blob and download link
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `danh-sach-khach-moi-${new Date().toISOString().slice(0, 10)}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div className="manage-guests-container">
             <div className="header-actions">
@@ -95,6 +141,13 @@ export default function InviteManager() {
                     className="btn btn-primary"
                 >
                     + Thêm khách mời
+                </button>
+
+                <button 
+                    onClick={handleExportGuests}
+                    className="btn btn-secondary"
+                >
+                    Xuất danh sách
                 </button>
 
                 {selectedGuestIds.length > 0 && (
