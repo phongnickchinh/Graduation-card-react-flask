@@ -82,6 +82,11 @@ def create_app(config_class=Config):
     guestbook_api = guestbook_api_init()
     app.register_blueprint(guestbook_api, url_prefix="/guestbook")
 
+    # Register health check endpoint
+    from .HealthService.controller import init_app as health_api_init
+    health_api = health_api_init()
+    app.register_blueprint(health_api, url_prefix="")
+
     app.register_error_handler(Exception, handle_exception)
 
     scheduler.init_app(app)
