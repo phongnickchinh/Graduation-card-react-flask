@@ -1,5 +1,5 @@
 // src/components/Navbar.jsx
-import { useState } from 'react';
+import { use, useState, useEffect} from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Navbar.css';
@@ -19,9 +19,11 @@ export default function Navbar() {
     const location = useLocation();
     const params = useParams();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    //luu lai guest nickname neu cos
+    const [nickname, setNickname] = useState(params.nickname || '');
 
-    const isGuest = location.pathname.includes('/GraduationInvitation') || location.pathname.includes('/guestbook') || location.pathname.includes('/story');
-    const nickname = params.nickname;
+    const isGuest = location.pathname.includes('/GraduationInvitation') || location.pathname.includes('/guestbook/view') || location.pathname.includes('/story');
+    const username = params.username || (user ? user.username : '');
 
     const openMenu = () => setIsMenuOpen(true);
     const closeMenu = () => setIsMenuOpen(false);
@@ -34,6 +36,14 @@ export default function Navbar() {
         logout();
         closeMenu();
     };
+
+    useEffect(() => {
+        // Nếu đang ở trang guest, lấy nickname từ params
+        if (isGuest && params.nickname) {
+            console.log('Setting nickname from params:', params.nickname);
+            setNickname(params.nickname);
+        }
+    }, [isGuest, params.nickname]);
 
     return (
         <>
@@ -72,10 +82,10 @@ export default function Navbar() {
                 {/* Menu Content */}
                 <div className="overlay-content">
                     {/* Guest View - Ưu tiên hiển thị khi đang ở trang guest */}
-                    {isGuest && nickname ? (
+                    {isGuest ? (
                         <>
                             <Link
-                                to={`/GraduationInvitation/${nickname}`}
+                                to={`/GraduationInvitation/${username}/${nickname}`}
                                 onClick={handleLinkClick}
                                 className="menu-item"
                             >
@@ -85,7 +95,7 @@ export default function Navbar() {
                                 />
                             </Link>
                             <Link
-                                to={`/guestbook/${nickname}`}
+                                to={`/guestbook/view/${username}/${nickname}`}
                                 onClick={handleLinkClick}
                                 className="menu-item"
                             >
@@ -95,7 +105,7 @@ export default function Navbar() {
                                 />
                             </Link>
                             <Link
-                                to={`/story/${nickname}`}
+                                to={`/story/view/${username}/${nickname}`}
                                 onClick={handleLinkClick}
                                 className="menu-item"
                             >

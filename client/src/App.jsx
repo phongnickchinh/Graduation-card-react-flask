@@ -1,10 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/user/Login';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import GuestBookPage from './pages/guest/GuestBookPage';
 import GuestPage from './pages/guest/GuestPage';
 import Dashboard from './pages/user/DashboardLayout';
+import ManageGuestbook from './pages/user/features/ManageGuestbook';
 import ManageGuests from './pages/user/features/ManageGuests';
 import ManageStories from './pages/user/features/ManageStories';
-import ManageGuestbook from './pages/user/features/ManageGuestbook';
+import Login from './pages/user/Login';
 
 import './App.css';
 
@@ -17,11 +18,19 @@ function App() {
       <Routes>
         {/* Guest/public routes */}
         <Route path="/login" element={<Login />} />
+
+        {/* Invitation routes */}
         <Route path="/GraduationInvitation/:username/:nickname" element={<GuestPage />} />
-        {/* <Route path="/guestbook/:username" element={<GuestBookPage />} /> */}
+        <Route path="/GraduationInvitation/:username" element={<GuestPage />} />
+        
+        {/* Guestbook routes */}
+        <Route path="/guestbook/view/:username/:nickname" element={<GuestBookPage />} />
+        <Route path="/guestbook/view/:username" element={<GuestBookPage />} />
 
         {/* Authenticated routes */}
         <Route path="/user/:username" element={<ProtectedRoute> <Dashboard/></ProtectedRoute>} >
+
+          {/* Nested routes for user dashboard */}
           <Route index element={<ManageGuests />} />
           <Route path="guests" element={<ManageGuests />} />
           <Route path="stories" element={<ManageStories />} />

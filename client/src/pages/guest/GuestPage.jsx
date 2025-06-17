@@ -6,6 +6,7 @@ import Navbar from '../../components/Navbar';
 import "./ResponsiveImage.css";
 
 import background_card from '../../assets/selected_card.png';
+import defaut_card from '../../assets/defaut.png';
 
 export default function GuestPage() {
     const { username, nickname } = useParams();
@@ -16,8 +17,17 @@ export default function GuestPage() {
     const navbarRef = useRef(null);
     const imageContainerRef = useRef(null);
 
+
     useEffect(() => {
     const fetchGuest = async () => {
+        if (!nickname) {
+            // Nếu không có nickname, không cần gọi API, tra ve thiep mac dinh
+            setLoading(false);
+            setGuest({
+                images: [{ image_url: defaut_card }],
+            });
+            return;
+        }
         try {
         console.log(`Fetching guest for username: ${username}, nickname: ${nickname}`);
         const res = await guestApi.getGuestByNickname(username, nickname);
