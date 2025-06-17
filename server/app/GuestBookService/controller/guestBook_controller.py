@@ -15,7 +15,9 @@ class GuestBookController:
     def register_routes(self):
         # Lấy danh sách lưu bút theo user_id
         guestBook_api.add_url_rule('/', 'get_list_guest_books', self._wrap_jwt_required(self.get_list_guest_books), methods=['GET'])
-        # Tạo mới một lưu bút
+        # Lấy danh sách lưu bút theo username (khach side)
+        guestBook_api.add_url_rule('/view/<string:username>', 'view_list_guest_books_guestSide', self.view_list_guest_books_guestSide, methods=['GET'])
+        #  Tạo mới một lưu bút
         guestBook_api.add_url_rule('/', 'create_guest_book', self._wrap_jwt_required(self.create_guest_book), methods=['POST'])
         # Tạo mới một lưu bút từ phía khách
         guestBook_api.add_url_rule('/add/<string:username>', 'create_guest_book_guestSide', self.create_guest_book_guestSide, methods=['POST'])
@@ -37,6 +39,12 @@ class GuestBookController:
     def get_list_guest_books(self, user_id):
         """Lấy danh sách lưu bút theo user_id."""
         guest_books = self.guest_book_service.get_list_guestBooks(user_id)
+        return jsonify([guest_book.as_dict() for guest_book in guest_books]), 200
+    
+
+    def view_list_guest_books_guestSide(self, username):
+        """Lấy danh sách lưu bút theo username (khách side)."""
+        guest_books = self.guest_book_service.get_list_guestBooks_by_username(username)
         return jsonify([guest_book.as_dict() for guest_book in guest_books]), 200
     
 
