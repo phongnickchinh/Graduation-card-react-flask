@@ -20,7 +20,7 @@ useEffect(() => {
       } catch (error) {
         console.error('Failed to get user profile:', error);
         localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+        // localStorage.removeItem('refresh_token');
         setUser(null);
       } finally {
         // Luôn set loading thành false sau khi đã xử lý xong
@@ -61,7 +61,7 @@ useEffect(() => {
       refreshTokenApi(refreshToken)
         .then((res) => {
           localStorage.setItem('access_token', res.access_token);
-          localStorage.setItem('refresh_token', res.refresh_token);
+          // localStorage.setItem('refresh_token', res.refresh_token);
         })
         .catch(() => {
           logout();
