@@ -1,6 +1,9 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import GuestBookPage from './pages/guest/GuestBookPage';
 import GuestPage from './pages/guest/GuestPage';
+import GuestMyStories from './pages/guest/GuestMyStories';
+
+
 import Dashboard from './pages/user/DashboardLayout';
 import ManageGuestbook from './pages/user/features/ManageGuestbook';
 import ManageGuests from './pages/user/features/ManageGuests';
@@ -26,6 +29,10 @@ function App() {
         {/* Guestbook routes */}
         <Route path="/guestbook/view/:username/:nickname" element={<GuestBookPage />} />
         <Route path="/guestbook/view/:username" element={<GuestBookPage />} />
+
+        {/* Guest view user stories */}
+        <Route path="/stories/view/:username" element={<GuestMyStories />} />
+        <Route path="/stories/view/:username/:nickname" element={<GuestMyStories />} />
 
         {/* Authenticated routes */}
         <Route path="/user/:username" element={<ProtectedRoute> <Dashboard/></ProtectedRoute>} >

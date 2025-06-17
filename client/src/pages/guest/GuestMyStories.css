@@ -1,0 +1,26 @@
+.guest-mystery-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.guest-mystery-message {
+  background-color: #ffe2ff;
+  border: 1px solid #f8b9ee;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px #f8b9ee;
+}
+
+.guest-mystery-message h2 {
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.guest-mystery-message p {
+  color: #6c757d;
+  font-size: 1.1rem;
+}

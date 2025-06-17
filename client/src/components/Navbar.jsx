@@ -22,7 +22,7 @@ export default function Navbar() {
     //luu lai guest nickname neu cos
     const [nickname, setNickname] = useState(params.nickname || '');
 
-    const isGuest = location.pathname.includes('/GraduationInvitation') || location.pathname.includes('/guestbook/view') || location.pathname.includes('/story');
+    const isGuest = location.pathname.includes('/GraduationInvitation') || location.pathname.includes('/guestbook/view') || location.pathname.includes('/stories/view');
     const username = params.username || (user ? user.username : '');
 
     const openMenu = () => setIsMenuOpen(true);
@@ -100,12 +100,12 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src={guestbookIcon} 
+                                    src={guestbookIcon}
                                     alt="Lưu bút"
                                 />
                             </Link>
                             <Link
-                                to={`/story/view/${username}/${nickname}`}
+                                to={`/stories/view/${username}/${nickname}`}
                                 onClick={handleLinkClick}
                                 className="menu-item"
                             >
