@@ -10,7 +10,7 @@ export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,6 +28,10 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -58,14 +62,27 @@ export default function Login() {
           <label className="form-label">
             Mật khẩu
           </label>
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="form-input"
-          />
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+            <button 
+              type="button" 
+              className="password-toggle-button" 
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? (
+                <i className="fas fa-eye-slash"></i>
+              ) : (
+                <i className="fas fa-eye"></i>
+              )}
+            </button>
+          </div>
         </div>
 
         <button
