@@ -126,7 +126,7 @@ class AuthController:
             }), 400
             
         new_access_token = self.auth_service.generate_access_token(user_id)
-        new_refresh_token = self.auth_service.generate_refresh_token(user_id)
+        # new_refresh_token = self.auth_service.generate_refresh_token(user_id)
 
         return jsonify({
             "resultMessage": {
@@ -135,7 +135,7 @@ class AuthController:
             },
             "resultCode": "00065",
             "access_token": new_access_token,
-            "refresh_token": new_refresh_token
+            # "refresh_token": new_refresh_token
         }), 200
     
     def logout(self, user_id):
