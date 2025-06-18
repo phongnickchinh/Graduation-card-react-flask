@@ -35,6 +35,12 @@ export default function Navbar() {
         closeMenu();
     };
 
+    const handleLogin = () => {
+        // Nếu đang ở trang guest, chuyển hướng về trang đăng nhập
+        window.location.href = '/login';
+        closeMenu();
+    };
+
     useEffect(() => {
         // Nếu đang ở trang guest, lấy nickname từ params
         if (isGuest && params.nickname) {
@@ -112,6 +118,12 @@ export default function Navbar() {
                                     alt="Câu chuyện"
                                 />
                             </Link>
+                            <button
+                                onClick={handleLogin}
+                                className="auth-btn login-btn"
+                            >
+                                Đăng nhập
+                            </button>
                         </>
                     ) : user ? (
                         /* Admin/User View - Chỉ hiển thị khi không phải trang guest */
@@ -148,7 +160,7 @@ export default function Navbar() {
                             </Link>
                             <button
                                 onClick={handleLogout}
-                                className="logout-btn"
+                                className="auth-btn logout-btn"
                             >
                                 Đăng xuất
                             </button>

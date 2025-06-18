@@ -149,19 +149,24 @@
     
 }
 
-/* Logout Button */
-.overlay-menu .logout-btn {
+/* Common styles for auth buttons */
+.overlay-menu .auth-btn {
   padding: 12px 24px;
   font-size: 18px;
-  color: #ff6b6b;
-  background: rgba(255, 107, 107, 0.1);
-  border: 2px solid #ff6b6b;
   border-radius: 8px;
   cursor: pointer;
   display: block;
   margin: 20px auto;
   transition: 0.3s;
   min-width: 150px;
+  border: 2px solid;
+}
+
+/* Logout button */
+.overlay-menu .logout-btn {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  border-color: #ff6b6b;
 }
 
 .overlay-menu .logout-btn:hover {
@@ -169,6 +174,20 @@
   color: white;
   transform: scale(1.05);
 }
+
+/* Login button */
+.overlay-menu .login-btn {
+  color: #4CAF50;
+  background: rgba(76, 175, 80, 0.1);
+  border-color: #4CAF50;
+}
+
+.overlay-menu .login-btn:hover {
+  background: #4CAF50;
+  color: white;
+  transform: scale(1.05);
+}
+
 
 /* Media Queries */
 @media screen and (min-width: 1024px) {
