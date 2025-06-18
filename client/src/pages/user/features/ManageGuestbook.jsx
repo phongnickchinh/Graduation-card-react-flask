@@ -225,16 +225,16 @@ export default function ManageGuestbook() {
                         + Thêm lưu bút
                     </button>
 
-                    {/* {user && (
+                    {user && (
                         <Link
-                            to={`/guestbook/${user.username}`}
+                            to={`/guestbook/view/${user.username}`}
                             className="btn btn-secondary"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            Xem trang lưu bút
+                            Xem dưới vai trò khách
                         </Link>
-                    )} */}
+                    )}
                 </div>
 
                 {selectedGuestBookIds.length > 0 && (
