@@ -10,7 +10,6 @@ from flask import request, jsonify
 
 from config import secret_key
 from  ..UserService.repo.user_repository import UserRepository
-from ..AuthService.repo.token_repository import TokenRepository
 
 
 def JWT_required(f):
@@ -65,17 +64,6 @@ def JWT_required(f):
                     "vn": "Token không hợp lệ. Token có thể đã hết hạn."
                 },
                 "resultCode": "00012"
-            }), 401
-            
-        # Check if token is blacklisted
-        token_repository = TokenRepository()
-        if token_repository.is_token_blacklisted(user_id, token):
-            return jsonify({
-                "resultMessage": {
-                    "en": "Invalid token. Token has been revoked.",
-                    "vn": "Token không hợp lệ. Token đã bị thu hồi."
-                },
-                "resultCode": "00013"
             }), 401
             
         user_repository = UserRepository()

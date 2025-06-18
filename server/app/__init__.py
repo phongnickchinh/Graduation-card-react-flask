@@ -30,6 +30,7 @@ scheduler = APScheduler()
 
 
 def create_app(config_class=Config):
+    # NEED FIX: logout endpoint is not working, access token not being add to blacklist property. Big issue. Do not delete this message unless you fixed it..
     app = Flask(__name__)
     app.config.from_object(config_class)
     CORS(app, resources={r"/*": {
@@ -61,6 +62,7 @@ def create_app(config_class=Config):
     from .UserService.model.user import User
     from .InvitationService.model.guest import Guest, GuestImages
     from .GuestBookService.model.guestBook import GuestBook
+    from .AuthService.model.token import Token
     
     # Import and initialize DI after models are imported
     from .AppConfig.di_setup import init_di

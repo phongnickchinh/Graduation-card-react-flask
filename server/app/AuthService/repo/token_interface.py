@@ -33,18 +33,3 @@ class TokenInterface(ABC):
     @abstractmethod
     def delete_refresh_token(self, user_id):
         pass
-
-
-    @abstractmethod
-    def to_blacklist(self, user_id, token):
-        """
-        Add a token to the blacklist.
-        """
-        pass
-
-    @abstractmethod
-    def is_token_blacklisted(self, user_id, token):
-        """
-        Check if a token is blacklisted.
-        """
-        pass

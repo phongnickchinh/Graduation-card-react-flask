@@ -142,23 +142,3 @@ class TokenRepository(TokenInterface):
             db.session.rollback() 
             logging.error(f"Error deleting refresh token: {str(e)}")
             raise
-
-
-    def to_blacklist(self, user_id, token):
-        new_blacklist_entry = BlacklistModel(user_id=user_id, token=token)
-        new_blacklist_entry.save()
-        return True if new_blacklist_entry else False
-
-
-    def is_token_blacklisted(self, user_id, token):
-        try:
-            blacklisted_token = db.session.execute(
-                db.select(BlacklistModel).where(
-                    BlacklistModel.user_id == user_id,
-                    BlacklistModel.token == token
-                )
-            ).scalar_one_or_none()
-            return True if blacklisted_token else False
-        except Exception as e:
-            logging.error(f"Error checking if token is blacklisted: {str(e)}")
-            raise

@@ -314,11 +314,9 @@ class AuthService:
         try:
             oka = self.token_repo.delete_refresh_token(user_id);
             # save access token to blacklist
-            okb = self.token_repo.to_blacklist(user_id, access_token)  # Assuming None is used to indicate access token invalidation
-            if oka and okb:
+            if oka:
                 return True
             return False
-        
         except Exception as e:
             logging.error(f"Error invalidating token: {str(e)}")
             raise
