@@ -11,8 +11,6 @@ import menuCloseIcon from '../assets/menu_close.png';
 import guestbookIcon from '../assets/navbar/guestbook.png';
 import invitationIcon from '../assets/navbar/invitation.png';
 import myStoryIcon from '../assets/navbar/myStory.png';
-import reactLogo from '../assets/react.svg';
-import selectedCardIcon from '../assets/selected_card.png';
 
 export default function Navbar() {
     const { user, logout } = useAuth(); // user tồn tại nếu đã đăng nhập
@@ -124,18 +122,8 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src={selectedCardIcon} 
+                                    src={invitationIcon}
                                     alt="Thiệp mời"
-                                />
-                            </Link>
-                            <Link
-                                to={`/user/${user.username}/stories`}
-                                onClick={handleLinkClick}
-                                className="menu-item"
-                            >
-                                <img 
-                                    src={reactLogo} 
-                                    alt="Story"
                                 />
                             </Link>
                             <Link
@@ -144,8 +132,18 @@ export default function Navbar() {
                                 className="menu-item"
                             >
                                 <img 
-                                    src={frameLogo} 
+                                    src={guestbookIcon}
                                     alt="Lưu bút"
+                                />
+                            </Link>
+                            <Link
+                                to={`/user/${user.username}/stories`}
+                                onClick={handleLinkClick}
+                                className="menu-item"
+                            >
+                                <img 
+                                    src={myStoryIcon}
+                                    alt="Story"
                                 />
                             </Link>
                             <button
