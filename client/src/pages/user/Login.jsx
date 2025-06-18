@@ -22,7 +22,7 @@ export default function Login() {
     setLoading(true);
     try {
       const loggedInUser = await login(form); // lấy user trả về từ login()
-      navigate(`/user/${loggedInUser.username}`);
+      navigate(`/user/${loggedInUser.username}/guests`);
     } catch (err) {
       setError('Email hoặc mật khẩu không đúng.');
     } finally {

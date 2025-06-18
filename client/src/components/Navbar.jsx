@@ -5,7 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 import './Navbar.css';
 
 // Import images
-import frameLogo from '../assets/Frame 10.png';
 import menuIcon from '../assets/menu.png';
 import menuCloseIcon from '../assets/menu_close.png';
 import guestbookIcon from '../assets/navbar/guestbook.png';
@@ -44,7 +43,6 @@ export default function Navbar() {
     useEffect(() => {
         // Nếu đang ở trang guest, lấy nickname từ params
         if (isGuest && params.nickname) {
-            console.log('Setting nickname from params:', params.nickname);
             setNickname(params.nickname);
         }
     }, [isGuest, params.nickname]);
@@ -129,7 +127,7 @@ export default function Navbar() {
                         /* Admin/User View - Chỉ hiển thị khi không phải trang guest */
                         <>
                             <Link
-                                to={`/user/${user.username}/guests`}
+                                to={`/user/${username}/guests`}
                                 onClick={handleLinkClick}
                                 className="menu-item"
                             >
@@ -139,7 +137,7 @@ export default function Navbar() {
                                 />
                             </Link>
                             <Link
-                                to={`/user/${user.username}/guestbook`}
+                                to={`/user/${username}/guestbook`}
                                 onClick={handleLinkClick}
                                 className="menu-item"
                             >
@@ -149,7 +147,7 @@ export default function Navbar() {
                                 />
                             </Link>
                             <Link
-                                to={`/user/${user.username}/stories`}
+                                to={`/user/${username}/stories`}
                                 onClick={handleLinkClick}
                                 className="menu-item"
                             >

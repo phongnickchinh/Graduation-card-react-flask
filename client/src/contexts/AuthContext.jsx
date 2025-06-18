@@ -14,6 +14,7 @@ useEffect(() => {
     console.log('Access Token:', accessToken);
 
     if (accessToken) {
+      console.log('Checking user authentication...');
       try {
         const userInfo = await getProfileApi();
         setUser(userInfo);

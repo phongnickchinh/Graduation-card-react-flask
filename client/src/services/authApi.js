@@ -14,8 +14,18 @@ export async function logoutApi() {
 }
 
 export async function getProfileApi() {
-  const res = await api.get('/user/');
-  return res.data; // user info
+  try {
+    console.log('Calling getProfileApi...');
+    const res = await api.get('/user/');
+    console.log('Profile API response:', res);
+    if (!res.data) {
+      throw new Error('User data is empty');
+    }
+    return res.data; // user info
+  } catch (error) {
+    console.error('Error getting profile:', error);
+    throw error;
+  }
 }
 
 export async function refreshTokenApi(refreshToken) {
