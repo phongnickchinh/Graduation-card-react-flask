@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useParams} from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import guestBookApi from '../../../services/guestBookApi';
 import './ManageGuestbook.css';
 
 export default function ManageGuestbook() {
+    const params = useParams();
     const [guestBooks, setGuestBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -21,6 +22,7 @@ export default function ManageGuestbook() {
     });
     const [previewImage, setPreviewImage] = useState(null);
     const { user } = useAuth();
+    const username = params.username || (user ? user.username : '');
 
     useEffect(() => {
         const fetchGuestBooks = async () => {
@@ -227,7 +229,7 @@ export default function ManageGuestbook() {
 
                     {user && (
                         <Link
-                            to={`/guestbook/view/${user.username}`}
+                            to={`/guestbook/view/${username}`}
                             className="btn btn-secondary"
                             target="_blank"
                             rel="noopener noreferrer"
