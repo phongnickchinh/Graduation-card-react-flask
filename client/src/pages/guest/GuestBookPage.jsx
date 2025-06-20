@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import HTMLFlipBook from 'react-pageflip';
 import { useParams } from 'react-router-dom';
-import guestBookApi from '../../services/guestBookApi';
 import Navbar from '../../components/Navbar';
+import guestBookApi from '../../services/guestBookApi';
 import './GuestBookPage.css';
 
-import bookCover from '../../assets/luubut.png'; // Placeholder for book cover image
 import formButton from '../../assets/formButton.png'; // Placeholder for form button image
 import laspage from '../../assets/lastpage.png'; // Placeholder for last page icon
-import prev from '../../assets/prev.png'; // Placeholder for previous page icon
+import bookCover from '../../assets/luubut.png'; // Placeholder for book cover image
 import next from '../../assets/next.png'; // Placeholder for next page icon
+import prev from '../../assets/prev.png'; // Placeholder for previous page icon
 
 // Page component for the flip book
 const Page = React.forwardRef((props, ref) => {
@@ -45,26 +45,29 @@ const GuestBookPage = () => {
     message: ''
   });
   const [currentPage, setCurrentPage] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const flipBookRef = useRef(null);
+  
+  // Hàm riêng để fetch guestbooks để có thể tái sử dụng
+  const fetchGuestBooks = async () => {
+    try {
+      setLoading(true);
+      const response = await guestBookApi.getGuestBooksByUsernameGuestSide(username);
+      // Sort by created_at descending (older entries first)
+      const sortedGuestBooks = response.data.sort((a, b) => 
+        new Date(a.created_at) - new Date(b.created_at)
+      );
+      setGuestBooks(sortedGuestBooks);
+      setLoading(false);
+    } catch (err) {
+      console.error('Error fetching guestbooks:', err);
+      setError('Không thể tải lưu bút. Vui lòng thử lại sau.');
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     // Fetch all guestbooks for this username
-    const fetchGuestBooks = async () => {
-      try {
-        const response = await guestBookApi.getGuestBooksByUsernameGuestSide(username);
-        // Sort by created_at descending (older entries first)
-        const sortedGuestBooks = response.data.sort((a, b) => 
-          new Date(a.created_at) - new Date(b.created_at)
-        );
-        setGuestBooks(sortedGuestBooks);
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching guestbooks:', err);
-        setError('Không thể tải lưu bút. Vui lòng thử lại sau.');
-        setLoading(false);
-      }
-    };
-
     fetchGuestBooks();
   }, [username]);
 
@@ -230,6 +233,9 @@ const GuestBookPage = () => {
       return;
     }
 
+    // Vô hiệu hóa nút submit để tránh gửi nhiều lần
+    setIsSubmitting(true);
+
     try {
       const data = new FormData();
       data.append('guest_name', formData.guest_name);
@@ -240,9 +246,6 @@ const GuestBookPage = () => {
 
       const response = await guestBookApi.createGuestBookAsGuest(username, data);
       
-      // Add the new guestbook to the state
-      setGuestBooks(prevBooks => [response.data, ...prevBooks]);
-      
       // Reset form
       setFormData({
         guest_name: '',
@@ -252,6 +255,9 @@ const GuestBookPage = () => {
       removeImage();
       setShowForm(false);
       setSubmitStatus({ status: 'success', message: 'Lưu bút đã được gửi thành công!' });
+
+      // Load lại dữ liệu từ API để cập nhật danh sách guestbook
+      await fetchGuestBooks();
 
       // Go to cover to show new entry
       if (flipBookRef.current) {
@@ -266,6 +272,9 @@ const GuestBookPage = () => {
     } catch (err) {
       console.error('Error submitting guestbook:', err);
       setSubmitStatus({ status: 'error', message: 'Không thể gửi lưu bút. Vui lòng thử lại sau.' });
+    } finally {
+      // Kích hoạt lại nút submit sau khi đã xử lý xong
+      setIsSubmitting(false);
     }
   };
 
@@ -415,8 +424,8 @@ const GuestBookPage = () => {
               <button type="button" onClick={() => setShowForm(false)} className="cancel-btn">
                 Huỷ
               </button>
-              <button type="submit" className="submit-btn">
-                Gửi lưu bút
+              <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Đang gửi...' : 'Gửi lưu bút'}
               </button>
             </div>
           </form>

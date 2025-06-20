@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link , useParams} from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import guestBookApi from '../../../services/guestBookApi';
 import './ManageGuestbook.css';
@@ -21,6 +21,7 @@ export default function ManageGuestbook() {
         image: null
     });
     const [previewImage, setPreviewImage] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { user } = useAuth();
     const username = params.username || (user ? user.username : '');
 
@@ -78,6 +79,7 @@ export default function ManageGuestbook() {
 
     const confirmDelete = async () => {
         try {
+            setIsSubmitting(true);
             await guestBookApi.deleteGuestBooks(selectedGuestBookIds);
             setGuestBooks(prev => prev.filter(book => !selectedGuestBookIds.includes(book.id)));
             setSelectedGuestBookIds([]);
@@ -86,6 +88,8 @@ export default function ManageGuestbook() {
         } catch (err) {
             setError('Không thể xóa lưu bút.');
             console.error('Error deleting guest books:', err);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -136,6 +140,9 @@ export default function ManageGuestbook() {
     const handleAddGuestBook = async (e) => {
         e.preventDefault();
         
+        // Vô hiệu hóa nút submit để tránh gửi nhiều lần
+        setIsSubmitting(true);
+        
         try {
             const data = new FormData();
             data.append('guest_name', formData.guest_name);
@@ -155,6 +162,9 @@ export default function ManageGuestbook() {
         } catch (err) {
             setError('Không thể thêm lưu bút. Vui lòng thử lại sau.');
             console.error('Error adding guestbook:', err);
+        } finally {
+            // Kích hoạt lại nút submit sau khi đã xử lý xong
+            setIsSubmitting(false);
         }
     };
 
@@ -176,6 +186,9 @@ export default function ManageGuestbook() {
 
     const handleUpdateGuestBook = async (e) => {
         e.preventDefault();
+        
+        // Vô hiệu hóa nút submit để tránh gửi nhiều lần
+        setIsSubmitting(true);
         
         try {
             const data = new FormData();
@@ -201,6 +214,9 @@ export default function ManageGuestbook() {
         } catch (err) {
             setError('Không thể cập nhật lưu bút. Vui lòng thử lại sau.');
             console.error('Error updating guestbook:', err);
+        } finally {
+            // Kích hoạt lại nút submit sau khi đã xử lý xong
+            setIsSubmitting(false);
         }
     };
 
@@ -356,8 +372,9 @@ export default function ManageGuestbook() {
                             <button
                                 onClick={confirmDelete}
                                 className="btn btn-danger"
+                                disabled={isSubmitting}
                             >
-                                Xóa
+                                {isSubmitting ? 'Đang xóa...' : 'Xóa'}
                             </button>
                         </div>
                     </div>
@@ -479,8 +496,9 @@ export default function ManageGuestbook() {
                                 <button
                                     type="submit"
                                     className="btn btn-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Thêm lưu bút
+                                    {isSubmitting ? 'Đang thêm...' : 'Thêm lưu bút'}
                                 </button>
                             </div>
                         </form>
@@ -559,8 +577,9 @@ export default function ManageGuestbook() {
                                 <button
                                     type="submit"
                                     className="btn btn-primary"
+                                    disabled={isSubmitting}
                                 >
-                                    Cập nhật
+                                    {isSubmitting ? 'Đang cập nhật...' : 'Cập nhật'}
                                 </button>
                             </div>
                         </form>
